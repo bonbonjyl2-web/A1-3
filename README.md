@@ -221,7 +221,7 @@ __pycache__/
 | 로컬/배포 코드 변경 (Git Diff) | Vercel 환경변수 설정 | 재배포 성공 (Ready) |
 | :---: | :---: | :---: |
 | ![Git Diff](이슈_이미지_URL_5) | ![Vercel Env](이슈_이미지_URL_6) | ![Vercel Deploy](이슈_이미지_URL_7) |
-
+ https://github.com/bonbonjyl2-web/A1-3/issues/1
 
 최종 구조:
 ```bash

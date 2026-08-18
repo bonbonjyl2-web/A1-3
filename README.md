@@ -175,45 +175,51 @@ __pycache__/
 
 ---
 
-## 10. Notes
+## 10. 배포 및 코드 에러 문제 해결 (Troubleshooting)
 
-- API 키는 반드시 `.env` 파일로 관리합니다.
-- `node_modules/`는 자동 생성 폴더이므로 업로드하지 않습니다.
-- 배포 URL은 실제 서비스 주소로 수정해야 합니다.
-- 프로젝트 구조는 구현 과정에서 일부 변경될 수 있습니다.
+본 프로젝트는 로컬 개발 환경과 Vercel 클라우드 배포 환경의 구조적 차이를 이해하고, 발생한 문제를 해결하여 성공적으로 재배포를 완료했습니다.
 
-
----
-
-## 수정 포인트
-제출 전에 아래 3가지만 바꾸면 더 완성도 높아요.
-
-1. **배포 URL 수정**
-```md
-https://your-project-url.vercel.app
-```
-→ 실제 주소로 변경
-
-2. **깃허브 주소 수정**
-```bash
-git clone https://github.com/your-username/your-repository-name.git
-```
-→ 본인 저장소 주소로 변경
-
-3. **작성자 이름 수정**
-```md
-Developer: Your Name
-```
-→ 본인 이름으로 변경
+### 1. 🛠️ 로컬(Local)과 배포(Deployment) 환경의 주요 차이점
+* **API 호출 경로 (Endpoint)**
+  * **로컬**: `http://127.0.0.1:8000/api/...` 와 같이 로컬 FastAPI 서버 IP를 직접 지정하여 테스트.
+  * **배포**: Vercel Serverless Function 환경에 맞추어 `/api/...` 와 같은 **상대 경로(Relative Path)**로 전환하여 통신 문제 해결.
+* **환경 변수 및 보안 (Environment Variables)**
+  * **로컬**: `.env` 파일에 Gemini API Key를 보관하여 호출.
+  * **배포**: 보안 유지를 위해 Git에 `.env`를 올리지 않고, Vercel 대시보드의 **Environment Variables**에 `GEMINI_API_KEY`를 별도 등록하여 서버리스 함수에서 참조하도록 구현.
+* **배포 설정 파일 (Build Config)**
+  * Vercel 플랫폼이 백엔드(`main.py`)와 정적 파일(`*.html`, `css`, `js`)을 올바르게 라우팅할 수 있도록 프로젝트 최상위에 `vercel.json` 및 `requirements.txt` 생성.
 
 ---
 
-## 한 가지 체크
-지금 구조에는 `requirements.txt`가 **폴더 구조에 없는데**, 실행 방법에는 들어가 있어요.  
-그래서 둘 중 하나로 맞추는 게 좋아요.
+### 2. 이슈 해결 및 재배포 흐름 (Re-deployment Process)
 
-### 방법 1. `requirements.txt`를 실제로 추가
-가장 깔끔한 방법입니다.
+| 단계 | 발생 이슈 / 작업 내용 | 해결 및 대응 방법 |
+| :--- | :--- | :--- |
+| **이슈 발생** | `404 models/gemini-pro is not found` 에러 발생 | Gemini API 모델 버전 호환성 문제 확인 |
+| **코드 수정** | `main.py` 내 모델 지정 변경 | `gemini-pro` $\rightarrow$ 최신 규격 모델인 `gemini-1.5-flash`로 변경 |
+| **자동 재배포** | GitHub 메인 브랜치 Push | Git Commit & Push 실행 시 Vercel CI/CD에 의해 자동 재배포 완료 |
+
+---
+
+## 📸 프로젝트 실행 및 증빙 스크린샷
+
+### 1. 서비스 동작 화면 (데스크톱 & 모바일)
+| 데스크톱 메인 / 리포트 | AI 마케팅 전략 제안 | 모바일 반응형 화면 |
+| :---: | :---: | :---: |
+| ![데스크톱 화면](이슈_이미지_URL_1) | ![AI 마케팅 전략](이슈_이미지_URL_2) | ![모바일 화면](이슈_이미지_URL_3) |
+
+---
+
+### 2. AI 코딩 도구 활용 내역
+![AI 프롬프트 대화 내역](이슈_이미지_URL_4)
+
+---
+
+### 3. 로컬 vs 배포 환경 수정 증빙 (재배포)
+| 로컬/배포 코드 변경 (Git Diff) | Vercel 환경변수 설정 | 재배포 성공 (Ready) |
+| :---: | :---: | :---: |
+| ![Git Diff](이슈_이미지_URL_5) | ![Vercel Env](이슈_이미지_URL_6) | ![Vercel Deploy](이슈_이미지_URL_7) |
+
 
 최종 구조:
 ```bash

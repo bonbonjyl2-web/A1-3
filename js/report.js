@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   try {
-    const response = await fetch(`http://127.0.0.1:8000/api/report?query=${encodeURIComponent(keyword)}`);
+    const response = await fetch(`/api/report?query=${encodeURIComponent(keyword)}`);
     const data = await response.json();
 
     reportContainer.innerHTML = `

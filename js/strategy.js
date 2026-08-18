@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   strategyContainer.innerHTML = `<p>💡 AI가 마케팅 전략을 생성 중입니다...</p>`;
 
   try {
-    const response = await fetch(`http://127.0.0.1:8000/api/strategy?query=${encodeURIComponent(keyword)}`);
+    const response = await fetch(`/api/strategy?query=${encodeURIComponent(keyword)}`);
     const data = await response.json();
 
     strategyContainer.innerHTML = `
